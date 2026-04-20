@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Urban Platter Events</title>
+    <th:block th:replace="~{partial :: bootstrap}"/>
+    <link rel="stylesheet" th:href="@{/css/list.css}">
+    <th:block th:replace="~{event/styleFragment :: commonCss}"/>
+</head>
+<body>
+<header>
+    <nav th:replace="~{nav :: nav}"></nav>
+</header>
+
+<!--/*@thymesVar id="seating" type="nbcc.resto.dto.Seating"*/-->
+
+<div class="container">
+    <main class="mt-4" th:object="${viewModel}">
+
+        <div class="mb-4">
+            <h4 class="fw-bold text-dark text-center">Please select an event</h4>
+        </div>
+        <div class="row g-4" th:unless="*{isEmpty()}">
+            <div class="col-md-3" th:each="event : *{events}">
+                <div class="event-card h-100">
+                    <h5 class="event-title fw-semibold" th:text="${event.name}"></h5>
+                    <div class="mt-3 d-flex">
+                        <strong style="width:110px;">Start Date:</strong>
+                        <span th:text="${#temporals.format(event.startDate,'yyyy-MM-dd')}"></span>
+                    </div>
+                    <div class="mt-2 d-flex">
+                        <strong style="width:110px;">End Date:</strong>
+                        <span th:text="${#temporals.format(event.endDate,'yyyy-MM-dd')}"></span>
+                    </div>
+                    <div class="mt-2 d-flex">
+                        <strong style="width:110px;">Duration:</strong>
+                        <span th:text="|${event.minutes} min|"></span>
+                    </div>
+                    <div class="mt-3 d-flex flex-column align-items-center gap-1">
+                        <a th:href="@{/seating/edit/{id}/{eventId}(id=${seating.id}, eventId=${event.id})}"
+                           class="btn btn-main">
+                            Select
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p th:if="*{isEmpty()}" class="text-center mt-5 text-white">
+            No Events Found
+        </p>
+    </main>
+</div>
+<th:block th:replace="~{footer :: footer}"/>
+</body>
+</html>

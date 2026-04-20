@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <th:block th:replace="~{partial :: bootstrap}"/>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<!--/*@thymesVar id="event" type="nbcc.resto.dto.UrbanPlatterEvent"*/-->
+<th:block th:fragment="input" th:object="${event}">
+    <input type="hidden" th:field="*{id}"/>
+    <div class="row mb-3">
+
+        <div class="alert alert-danger" th:if="${#fields.hasGlobalErrors()}" role="alert">
+            <strong>Error!</strong>
+            <div th:each="err : ${#fields.globalErrors}" th:text="${err}"></div>
+        </div>
+
+        <div class="col-md-4">
+            <label class="fw-bold">Name:</label>
+            <input type="text" th:field="*{name}" class="form-control"/>
+            <div class="text-danger small mt-1" th:errors="*{name}"></div>
+        </div>
+
+        <div class="col-md-4">
+            <label class="fw-bold">Start date:</label>
+            <input type="datetime-local" th:field="*{startDate}" class="form-control"/>
+            <div class="text-danger small mt-1" th:errors="*{startDate}"></div>
+        </div>
+
+        <div class="col-md-4">
+            <label class="fw-bold">End date:</label>
+            <input type="datetime-local" th:field="*{endDate}" class="form-control"/>
+            <div class="text-danger small mt-1" th:errors="*{endDate}"></div>
+        </div>
+    </div>
+
+
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <label class="fw-bold">Description (Optional)</label>
+            <textarea th:field="*{description}" class="form-control"></textarea>
+        </div>
+    </div>
+
+    <div class="row mb-3 justify-content-center">
+
+        <div class="col-md-3">
+            <label class="fw-bold">Duration:</label>
+            <input type="number" th:field="*{minutes}" class="form-control"/>
+            <div class="text-danger small mt-1" th:errors="*{minutes}"></div>
+        </div>
+
+        <div class="col-md-3">
+            <label class="fw-bold">Price $</label>
+            <input type="number" step="0.01" th:field="*{price}" class="form-control"/>
+            <div class="text-danger small mt-1" th:errors="*{price}"></div>
+        </div>
+
+        <div class="col-md-3">
+            <label class="fw-bold">Selected Menu</label>
+            <div class="d-flex align-items-center gap-2" id="parent-menu">
+                <input type="hidden" th:field="*{menu.id}"/>
+                <input id="menu-name"
+                       type="text"
+                       disabled
+                       th:value="${event.menu != null ? event.menu.name : ''}"
+                       class="form-control fw-bold"
+                       placeholder="No Menu Selected"
+                />
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label></label>
+            <div id="toggle-active" class="d-flex align-items-center gap-3 mt-1" style="display: none !important;">
+                <div class="form-check form-switch mb-0">
+                    <input type="checkbox"
+                           id="menu-toggle"
+                           class="form-check-input"
+                           role="switch"
+                           style="transform: scale(1.8); cursor: pointer; margin-right: 10px;"
+                           th:field="*{active}"
+                    />
+                </div>
+                <span id="toggle-badge" class="badge"
+                      th:classappend="${event.active} ? 'bg-success' : 'bg-secondary'"
+                      th:text="${event.active} ? 'Live' : 'Not Live'">
+        </span>
+            </div>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

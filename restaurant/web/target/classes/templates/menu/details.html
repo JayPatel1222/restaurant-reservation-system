@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu Details - [[${menu.name}]] </title>
+    <link th:replace="~{partial :: bootstrap}"/>
+    <link rel="stylesheet" th:href="@{/css/commonStyle/button.css}">
+</head>
+<body>
+<header>
+    <nav th:replace="~{nav :: navbar}"></nav>
+</header>
+<div class="container mt-5">
+
+    <div class="mb-4">
+        <h2 class="fw-bold">Menu Details</h2>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 mx-auto" style="max-width: 600px; background: #ececec">
+
+        <div class="card-body p-4">
+
+            <th:block th:replace="~{/menu/fragment :: detail}"/>
+            <div class="d-flex justify-content-end gap-2">
+
+                <a th:href="@{/menu/edit/{id}(id=*{id})}" class="btn btn-main px-4">
+                    Edit
+                </a>
+                <a th:href="@{/menu/delete/{id}(id=*{id})}" class="btn btn-danger px-4">
+                    Delete
+                </a>
+                <a th:href="@{/menu}" class="btn btn-secondary px-4">
+                    Go Back
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="~{footer :: footer}"/>
+</body>
+</html>

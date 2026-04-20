@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Input</title>
+</head>
+<body>
+<!--/*@thymesVar id="seating" type="nbcc.resto.dto.Seating"*/-->
+
+<th:block th:fragment="input">
+
+    <th:block th:object="${seating}" th:if="${seating != null}">
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="card-title mb-0">Seating Information</h5>
+            </div>
+            <div class="card-body">
+
+                <div class="alert alert-danger" th:if="${#fields.hasGlobalErrors()}" role="alert">
+                    <strong>Error!</strong>
+                    <div th:each="err : ${#fields.globalErrors}" th:text="${err}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">
+                       Seating Name
+                        <input th:field="*{name}" class="form-control mt-1" placeholder="Enter seating name"/>
+                    </label>
+                    <div class="text-danger small mt-1 fw-semibold" th:errors="*{name}"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                Start Date
+                                <input type="datetime-local" th:field="*{startDate}" class="form-control mt-1" />                            </label>
+                            <div class="text-danger small mt-1 fw-semibold" th:errors="*{startDate}"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                Duration
+                                <input type="number"  th:field="*{duration}" class="form-control mt-1" />
+                            </label>
+                            <div class="text-danger small mt-1 fw-semibold" th:errors="*{duration}"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </th:block>
+</th:block>
+
+<!--List -->
+<!--/*@thymesVar id="viewModel" type="nbcc.resto.viewmodel.SeatingListViewModel"*/-->
+<th:block th:fragment="list" th:object="${viewModel}">
+    <div class="card shadow-sm mt-5 p-4">
+        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0 text-dark">Seatings Available</h5>
+        </div>
+        <div class="card-body p-0" th:unless="*{isEmpty()}">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped mb-0">
+                    <thead class="table-dark">
+                    <tr>
+                        <th class="fw-bold">Name</th>
+                        <th class="fw-bold">Start Date</th>
+                        <th class="fw-bold">Duration</th>
+                        <th class="fw-bold" th:if="*{showEvent}">Event</th>
+                        <th class="fw-bold text-center" th:if="*{!showSelectButton}">Manage</th>
+                        <th class="fw-bold text-center" th:if="*{showSelectButton}"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="seating : *{seatings}" class="align-middle">
+                        <td>
+                            <strong class="text-success" th:text="${seating.name}"></strong>
+                        </td>
+                        <td>
+                            <strong  class="text-success" th:text="${#temporals.format(seating.startDate, 'dd-MM-yyyy HH:mm')}"></strong>
+                        </td>
+                        <td>
+                            <strong class="text-success" th:text="${seating.duration}"></strong>
+                        </td>
+                        <td th:if="*{showEvent}">
+                            <a th:if="${seating.platterEvent}" class="badge bg-secondary text-decoration-none"
+
+                               th:href="@{/event/{eventId}(eventId=${seating.getPlatterEvent().id})}" th:text="${seating.platterEvent.name}"></a>
+                            <span th:unless="${seating.platterEvent}" class="text-muted small">No Event</span>
+                        </td>
+                        <td th:if="*{showSelectButton}">
+                            <a th:href="@{/reservation/{eventId}/book/{seatingId}(seatingId=${seating.id}, eventId=${seating.platterEvent.id} )}"
+                               class="btn btn-dark action-btn" title="View Tables">
+                                Select
+                            </a>
+                        </td>
+
+                        <td th:if="*{!showSelectButton}" class="fw-bold text-center">
+                            <a th:href="@{/seating/{seatingId}/assignTable(seatingId=${seating.id})}"
+                               class="btn btn-dark action-btn" title="View Tables">
+                                Assign Table
+                            </a>
+                            <a th:href="@{/seating/edit/{seatingId}(seatingId=${seating.id})}"
+                                   class="btn btn-success action-btn" title="Update Seating">
+                                Update
+                            </a>
+                            <a th:href="@{/seating/delete/{seatingId}(seatingId=${seating.id})}"
+                               class="btn btn-danger action-btn" title="Delete seating">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-body text-center py-5" th:if="*{isEmpty()}">
+            <div class="text-muted">
+                <h5>No Seatings Found</h5>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+</body>
+</html>

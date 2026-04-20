@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <th:block th:replace="~{partial :: bootstrap}"/>
+    <link rel="stylesheet" th:href="@{/css/details.css}">
+    <th:block th:replace="~{event/styleFragment :: commonCss}"/>
+    <title>Update Seating</title>
+</head>
+<body>
+<header>
+    <nav th:replace="~{nav :: navbar}"></nav>
+</header>
+<div class="container mt-3">
+    <main class="row g-5">
+        <div th:replace="~{reservation/fragments :: event}"></div>
+
+        <div class="col-md-6">
+                <!--/*@thymesVar id="id" type="nbcc.resto.dto.UrbanPlatterEvent"*/-->
+                <form method="post"
+                      th:action="@{/seating/edit/{id}/{eventId}(id=${seating.id}, eventId=${event.id})}"
+                      th:object="${seating}">
+                    <th:block th:object="${seating}" th:if="${seating != null}">
+                        <div class="card shadow-sm mt-4">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="card-title mb-0">Seating Information</h5>
+                            </div>
+                            <div class="card-body">
+
+                                <div class="alert alert-danger" th:if="${#fields.hasGlobalErrors()}" role="alert">
+                                    <strong>Error!</strong>
+                                    <div th:each="err : ${#fields.globalErrors}" th:text="${err}"></div>
+                                </div>
+
+                                <input type="hidden" th:field="*{id}"/>
+                                <input type="hidden" th:field="*{version}"/>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">
+                                        Seating Name
+                                        <input th:field="*{name}" class="form-control mt-1" placeholder="Enter seating name"/>
+                                    </label>
+                                    <div class="text-danger small mt-1 fw-semibold" th:errors="*{name}"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3 p-2">
+                                            <label class="form-label fw-bold">
+                                                Start Date
+                                                <input type="datetime-local" th:field="*{startDate}" class="form-control mt-1" />
+                                            </label>
+                                            <div class="text-danger small mt-1 fw-semibold" th:errors="*{startDate}"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3 p-2">
+                                            <label class="form-label fw-bold">
+                                                Duration
+                                                <input type="number"  th:field="*{duration}" class="form-control mt-1" />
+                                            </label>
+                                            <div class="text-danger small mt-1 fw-semibold" th:errors="*{duration}"></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
+
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-success mt-2"/>
+                    </div>
+                </form>
+            </div>
+<!--        </div>-->
+        <div>
+            <a th:href="@{/seating}"  class="btn btn-dark mt-2">Go Back</a>
+        </div>
+    </main>
+</div>
+<th:block th:replace="~{footer::footer}"/>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <th:block th:replace="~{partial :: bootstrap}"/>
+    <title>Reservations</title>
+</head>
+<body>
+<header>
+    <nav th:replace="~{nav :: navbar}"></nav>
+</header>
+<div class="container">
+    <main class="pb-3">
+        <div th:replace="~{reservation/fragments :: reservationsList}"></div>
+        <a th:href="@{/reservation}" class="btn btn-secondary action-btn mt-2">
+            Go Back
+        </a>
+    </main>
+</div>
+<th:block th:replace="~{footer::footer}"/>
+</body>
+</html>

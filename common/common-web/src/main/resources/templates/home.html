@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <title>Home</title>
+
+    <th:block th:replace="~{partial :: bootstrap}"/>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body>
+
+<header>
+    <th:block th:replace="~{nav :: nav}"/>
+</header>
+<div class="container mb-5">
+
+    <!-- LOGO SECTION -->
+    <div class="logo-section text-center">
+
+        <img th:src="@{/UrbanPlatterLogo.png}"
+             alt="Urban Platter Logo"
+             class="main-logo">
+
+        <p class="tagline">
+            Fresh ingredients • Creative flavors • Memorable dining
+        </p>
+
+        <a th:href="@{/event}" class="btn btn-success btn-lg mt-3">
+            View Upcoming Events
+        </a>
+
+    </div>
+
+
+    <!-- FEATURED SECTION -->
+    <h4 class="section-title text-center mt-5 mb-4">
+        Our Specialties
+    </h4>
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="image-card">
+                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836"
+                     class="food-img">
+                <div class="image-label">Signature Dishes</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="image-card">
+                <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe"
+                     class="food-img">
+                <div class="image-label">Fresh Salads</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="image-card">
+                <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061"
+                     class="food-img">
+                <div class="image-label">Desserts</div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<th:block th:replace="~{footer :: footer}"/>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <th:block th:replace="~{partial :: bootstrap}"/>
+    <title>Seating List</title>
+</head>
+<body>
+<header>
+    <nav th:replace="~{nav :: navbar}"></nav>
+</header>
+<div class="container">
+    <main role="main" class="pb-3">
+        <div th:replace="~{seating/fragments :: list}"></div>
+    </main>
+</div>
+<th:block th:replace="~{footer::footer}"/>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <th:block th:replace="~{partial :: bootstrap}"/>
+    <title>Update Dining Table</title>
+</head>
+<body>
+<header>
+    <nav th:replace="~{nav :: navbar}"></nav>
+</header>
+<div class="container">
+    <main role="main" class="pb-3">
+        <div class="row">
+            <div class="col-md-4">
+                <form th:action="@{/diningTable/edit/{id}(id=${diningTable.id})}" method="post" th:object="${diningTable}">
+                     <div th:replace="~{diningtable/fragments :: input}"></div>
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-success mt-2"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div>
+            <a th:href="@{/diningTable}"  class="btn btn-dark mt-2">Go Back</a>
+        </div>
+    </main>
+</div>
+<th:block th:replace="~{footer::footer}"/>
+</body>
+</html>

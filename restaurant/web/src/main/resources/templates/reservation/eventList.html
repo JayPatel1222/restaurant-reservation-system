@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Urban Platter Events</title>
+    <th:block th:replace="~{partial :: bootstrap}"/>
+    <link rel="stylesheet" th:href="@{/css/list.css}">
+    <th:block th:replace="~{event/styleFragment :: commonCss}"/>
+</head>
+<body>
+<header>
+    <nav th:replace="~{nav :: nav}"></nav>
+</header>
+
+<div class="container">
+    <main class="mt-4"  th:object="${viewModel}">
+        <div class="mb-4 ">
+            <h4 class="fw-bold text-center">Please select an event</h4>
+            <p class="text-center mb-0">Choose an event to see available seatings</p>
+        </div>
+        <div th:replace="~{reservation/fragments :: list}"></div>
+    </main>
+</div>
+<th:block th:replace="~{footer :: footer}"/>
+</body>
+</html>

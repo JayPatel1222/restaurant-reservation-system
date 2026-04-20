@@ -1,0 +1,84 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nav</title>
+    <th:block th:replace="~{partial :: bootstrap}"/>
+</head>
+<body>
+<header>
+
+    <nav th:fragment="navbar" class="navbar navbar-expand-lg custom-navbar">
+        <!--/*@thymesVar id="navViewModel" type="nbcc.common.viewmodel.NavViewModel"*/-->
+
+        <div class="container-fluid">
+
+            <!-- Left side: Logo / Home -->
+<!--            <a class="navbar-brand custom-brand" th:href="@{/}">-->
+            <a class="navbar-brand" th:href="@{/}">
+               <img class="custom-logo" th:src="@{/images/logo.png}" alt="Urban Platter Logo">
+            </a>
+
+            <!-- Mobile toggle -->
+            <button class="navbar-toggler custom-toggler" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#mainNavbar"
+                    aria-controls="mainNavbar"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNavbar">
+
+                <!-- Left nav links -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link custom-link" th:href="@{/reservation}">Book Now</a>
+                    </li>
+                    <li class="nav-item" th:if="${navViewModel.showManageBtn}">
+                        <a class="nav-link custom-link" th:href="@{/event}">Events</a>
+                    </li>
+
+                    <li class="nav-item" th:if="${navViewModel.showManageBtn}">
+                        <a class="nav-link custom-link" th:href="@{/seating}">Seatings</a>
+                    </li>
+
+                    <li class="nav-item" th:if="${navViewModel.showManageBtn}">
+                        <a class="nav-link custom-link" th:href="@{/diningTable}">Tables</a>
+                    </li>
+                    <li class="nav-item" th:if="${navViewModel.showManageBtn}">
+                        <a class="nav-link custom-link" th:href="@{/menu}">Menus</a>
+                    </li>
+                    <li class="nav-item" th:if="${navViewModel.showManageBtn}">
+                        <a class="nav-link custom-link" th:href="@{/reservation/list}">Reservations</a>
+                    </li>
+                </ul>
+
+                <!-- Right nav links -->
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item" th:if="${navViewModel.showRegisterLink}">
+                        <a class="nav-link custom-link" th:href="@{/register}">Register</a>
+                    </li>
+
+                    <li class="nav-item" th:if="${navViewModel.showLoginLink}">
+                        <a class="nav-link custom-link" th:href="@{/login}">Login</a>
+                    </li>
+
+                    <li class="nav-item" th:if="${navViewModel.showUserName}">
+                        <span class="nav-link custom-user" th:text="${navViewModel.username}"></span>
+                    </li>
+
+                    <li class="nav-item" th:if="${navViewModel.showLogoutButton}">
+                        <form th:action="@{/logout}" method="post" class="d-flex align-items-center">
+                            <input class="nav-link custom-link custom-logout-btn" type="submit" value="Logout"/>
+                        </form>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+</header>
+</body>
+</html>

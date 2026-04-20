@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dining Tables</title>
+    <link th:replace="~{partial :: bootstrap}"/>
+</head>
+<body>
+<header>
+    <nav th:replace="~{nav :: nav}"></nav>
+</header>
+<div class="container">
+    <main role="main" class="pb-3 mt-2">
+        <a th:href="@{/diningTable/create}" class="btn btn-success">Create</a>
+        <div th:replace="~{diningtable/fragments :: list}"></div>
+
+    </main>
+</div>
+<th:block th:replace="~{footer::footer}"/>
+
+</body>
+</html>

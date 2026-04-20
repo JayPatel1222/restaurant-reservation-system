@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{partial :: bootstrap}"/>
+    <meta charset="UTF-8">
+    <title>Approve Reservation</title>
+</head>
+<body>
+<header>
+    <nav th:replace="~{nav :: navbar}"></nav>
+</header>
+<div class="container">
+    <main role="main" class="pb-3">
+        <th:block th:object="${viewModel}">
+            <div class="alert alert-danger mt-2" th:if="${errors}" role="alert">
+                <strong>Error!</strong>
+                <div th:each="err : ${errors}" th:text="${err.message}"></div>
+            </div>
+            <div class="card shadow-sm mt-4">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0 text-dark">Select a table for this Reservation</h5>
+                </div>
+                <div class="card-body p-0" th:unless="*{isEmpty()}">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped mb-0">
+                            <thead class="table-dark">
+                            <tr>
+                                <th class="fw-bold">Name</th>
+                                <th class="fw-bold">Capacity</th>
+                                <th class="fw-bold text-center">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="diningTable : *{diningTables}" class="align-middle">
+                                <td>
+                                    <strong class="text-success" th:text="${diningTable.name}"></strong>
+                                </td>
+                                <td>
+                                    <strong class="text-success" th:text="${diningTable.capacity}"></strong>
+                                </td>
+                                <td class="fw-bold text-center">
+                                    <form th:action="@{/reservation/{requestId}/approve/{tableId}(requestId=${reservation.id}, tableId=${diningTable.id})}" method="post">
+                                        <button type="submit" class="btn btn-success">Assign</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-body text-center py-5" th:if="*{isEmpty()}">
+                    <div class="text-muted">
+                        <h5>No Tables Found</h5>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+        <div>
+            <a  class="btn btn-dark mt-2" th:href="@{/reservation/list}">Go Back</a>
+        </div></main>
+</div>
+<th:block th:replace="~{footer::footer}"/>
+
+</body>
+</html>

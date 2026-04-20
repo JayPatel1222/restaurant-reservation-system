@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit</title>
+  <link th:replace="~{partial :: bootstrap}"/>
+  <link rel="stylesheet" th:href="@{/css/commonStyle/button.css}">
+
+</head>
+<body>
+<header>
+  <nav th:replace="~{nav :: navbar}"></nav>
+</header>
+<form th:action="@{/menuItem/edit/{id}(id=${menuItem.menuId})}" method="post" th:object="${menuItem}">
+  <input type="hidden" th:field="*{version}"/>
+  <div>
+    <div class="container-fluid w-25 mt-4 mb-4">
+      <h2 class="tex-center me-2" >You are Editing Item for <span class="text-warning" th:text="${menu.name}"></span> Menu</h2>
+    </div>
+    <div th:replace="~{menuItem/fragment :: input}"></div>
+    <div class="container-fluid w-25 mt-4 mb-4">
+      <button type="submit" class="btn btn-main me-2">Save Item</button>
+      <a th:href="@{/menu/edit/{id}(id=*{menuId})}" class="btn btn-secondary px-4">
+        Go back
+      </a>
+    </div>
+
+  </div>
+</form>
+<th:block th:replace="~{footer :: footer}"/>
+</body>
+</html>

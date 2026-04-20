@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Menu</title>
+  <link th:replace="~{partial :: bootstrap}"/>
+  <link rel="stylesheet" th:href="@{/css/commonStyle/button.css}">
+  <style>
+    :root {
+      --color-black: #0F0E0E;
+      --color-red-dark: #e04848;
+      --color-olive: #8B9A46;
+      --color-light: #EEEEEE;
+      --color-olive-hover: #9faf53;
+      --color-red-hover: #6b1b1b;
+      --olive-pale: #f0f3e8;
+    }
+
+
+    .bg-olive-pale { background-color: var(--olive-pale) !important; }
+    .text-olive { color: var(--color-olive) !important; }
+    .border-olive { border-color: var(--color-olive) !important; }
+
+    .btn-save { background-color: var(--color-olive); color: white; border: none; }
+    .btn-save:hover { background-color: var(--color-olive-hover); color: white; }
+
+    .btn-add-item { background-color: var(--olive-pale); color: var(--color-olive); border: 1.5px solid var(--color-olive); }
+    .btn-add-item:hover { background-color: var(--color-olive); color: white; }
+
+    .form-control:focus {
+      border-color: var(--color-olive);
+      box-shadow: 0 0 0 0.2rem rgba(139,154,70,0.2);
+    }
+
+    .items-scroll { max-height: 520px; overflow-y: auto; }
+  </style>
+</head>
+<body class="bg-light">
+<header>
+  <nav th:replace="~{nav :: navbar}"></nav>
+</header>
+
+<div class="container-xl px-4 py-5">
+
+  <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom border-2">
+    <div>
+      <h1 class="fs-2 fw-bold mb-0">Update Menu</h1>
+      <p class="text-muted small mb-0 mt-1"
+         th:text="${menu.name} + ' · Edit details and manage items'"></p>
+    </div>
+  </div>
+
+  <div class="row g-4 align-items-start">
+
+    <div class="col-12 col-md-4">
+      <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+
+        <div class="card-header bg-olive-pale border-bottom py-3 px-4">
+          <span class="fw-semibold text-olive fs-5">Menu Details</span>
+        </div>
+
+        <div class="card-body p-4">
+          <form th:action="@{/menu/edit/{id}(id=${menu.id})}" method="post" th:object="${menu}">
+            <input type="hidden" th:field="*{version}"/>
+
+            <div class="alert alert-danger border-start border-danger border-4 rounded-3 py-2 px-3 mb-3"
+                 th:if="${#fields.hasGlobalErrors()}">
+              <strong class="d-block mb-1">Please fix the following:</strong>
+              <div th:each="err : ${#fields.globalErrors}" th:text="${err}"></div>
+            </div>
+
+            <div th:replace="~{menu/fragment::input}"></div>
+
+            <div class="d-flex flex-wrap gap-2 mt-3">
+              <button type="submit" class="btn btn-save px-4 rounded-3"> Save</button>
+              <a th:href="@{/menu}" class="btn btn-secondary px-4 rounded-3">Go Back</a>
+              <a th:href="@{/menuItem/add/{id}(id=${menu.id})}"
+                 class="btn btn-add-item px-4 rounded-3">+ Add Item</a>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-8">
+      <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+
+        <div class="card-header bg-olive-pale border-bottom py-3 px-4 d-flex align-items-center justify-content-between">
+          <span class="fw-semibold text-olive fs-5">Menu Items</span>
+          <span class="badge rounded-pill bg-secondary"
+                th:text="${menuItems != null ? menuItems.size() : 0} + ' items'">0 items</span>
+        </div>
+
+        <div class="row g-0 px-3 py-2 border-bottom bg-white"
+             th:if="${menuItems != null and not #lists.isEmpty(menuItems)}">
+          <div class="col-3 text-uppercase fw-semibold small text-muted">Name</div>
+          <div class="col-5 text-uppercase fw-semibold small text-muted">Description</div>
+          <div class="col-4 text-uppercase fw-semibold small text-muted text-center">Actions</div>
+        </div>
+
+        <div class="items-scroll">
+
+          <div th:each="item : ${menuItems}"
+               class="row g-0 align-items-center px-3 py-2 border-bottom bg-white">
+            <div class="col-3 fw-semibold small" th:text="${item.name}"></div>
+            <div class="col-5 text-muted small " th:text="${item.description}"></div>
+            <div class="col-4 d-flex justify-content-center gap-2">
+              <a th:href="@{/menuItem/edit/{id}(id=${item.id})}"
+                 class="btn btn-main btn-sm rounded-3">Edit</a>
+              <a th:href="@{/menuItem/delete/{id}(id=${item.id})}"
+                 class="btn btn-danger btn-sm rounded-3">Delete</a>
+            </div>
+          </div>
+
+            <div class="text-center py-5 text-muted"
+               th:if="${menuItems == null or #lists.isEmpty(menuItems)}">
+            <div class="fs-1 mb-2 opacity-25">🍴</div>
+            <p class="small mb-0">No items added yet.</p>
+            <p class="small">Click <strong>+ Add Item</strong> to get started.</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<th:block th:replace="~{footer :: footer}"/>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link th:replace="~{partial :: bootstrap}"/>
+</head>
+<body class="bg-light min-vh-100 d-flex flex-column">
+
+<div th:insert="~{nav :: navbar}"></div>
+
+<div class="flex-grow-1 d-flex align-items-center justify-content-center py-5">
+    <div class="card shadow border-0 rounded-4 p-4" style="width: 100%; max-width: 460px;">
+        <div class="card-body px-2">
+
+            <div class="text-center mb-4">
+                <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 56px; height: 56px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-success" viewBox="0 0 24 24">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <line x1="19" y1="8" x2="19" y2="14"/>
+                        <line x1="22" y1="11" x2="16" y2="11"/>
+                    </svg>
+                </div>
+                <h2 class="fw-semibold mb-1">Create an account</h2>
+                <p class="text-muted small mb-0">Fill in your details to get started</p>
+            </div>
+
+            <div th:unless="${message == null}" class="alert alert-warning d-flex align-items-center gap-2 py-2" role="alert">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="flex-shrink-0" viewBox="0 0 16 16">
+                    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </svg>
+                <span class="small" th:text="${message}"></span>
+            </div>
+
+            <form method="post" th:action="@{/register}" th:object="${user}">
+
+                <div class="mb-3">
+                    <label for="username" class="form-label fw-medium small">Username</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted" viewBox="0 0 24 24">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                            </svg>
+                        </span>
+                        <input th:field="*{username}" id="username" class="form-control border-start-0 ps-0" placeholder="Choose a username"/>
+                    </div>
+                    <div class="alert alert-warning d-flex align-items-center gap-2 py-2 mt-2 mb-0" th:errors="*{username}" role="alert"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label fw-medium small">Email address</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted" viewBox="0 0 24 24">
+                                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                            </svg>
+                        </span>
+                        <input th:field="*{email}" id="email" class="form-control border-start-0 ps-0" placeholder="you@example.com"/>
+                    </div>
+                    <div class="alert alert-warning d-flex align-items-center gap-2 py-2 mt-2 mb-0" th:errors="*{email}" role="alert"></div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="password" class="form-label fw-medium small">Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted" viewBox="0 0 24 24">
+                                <rect x="3" y="11" width="18" height="11" rx="2"/>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            </svg>
+                        </span>
+                        <input th:field="*{password}" id="password" type="password" class="form-control border-start-0 ps-0" placeholder="Create a password"/>
+                    </div>
+                    <div class="alert alert-warning d-flex align-items-center gap-2 py-2 mt-2 mb-0" th:errors="*{password}" role="alert"></div>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100 py-2 fw-medium">
+                    Create account
+                </button>
+
+            </form>
+
+            <hr class="my-4"/>
+
+            <p class="text-center text-muted small mb-0">
+                Already have an account? <a th:href="@{/login}" class="text-decoration-none fw-medium">Sign in</a>
+            </p>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

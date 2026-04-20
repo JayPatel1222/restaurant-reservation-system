@@ -1,0 +1,11 @@
+footer {
+    flex-shrink: 0;
+    background-color: #222;
+    color: #fff;
+    border-top: 1px solid #333;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}

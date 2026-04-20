@@ -1,0 +1,59 @@
+.custom-navbar {
+    background-color: #8B9A46;
+    padding: 0.75rem 1.25rem;
+}
+
+.custom-logo {
+    height: 52px;
+}
+
+.custom-navbar .nav-link {
+    color: #0F0E0E;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.custom-link {
+    padding: 0.5rem 1rem !important;
+    margin: 0 0.25rem;
+    border-radius: 999px;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.2s ease;
+}
+
+.custom-link:hover {
+    background-color: #0F0E0E;
+    color: #EEEEEE;
+    transform: translateY(-1px);
+}
+
+.custom-user {
+    color: #541212;
+    font-weight: 600;
+    padding: 0.5rem 1rem !important;
+    background-color: #EEEEEE;
+    margin: 0 0.25rem;
+    border-radius: 999px;
+}
+
+.custom-logout-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.custom-logout-btn:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.custom-toggler {
+    border-color: rgba(0, 0, 0, 0.35);
+}
+
+.custom-toggler:focus {
+    box-shadow: none;
+}
+
+.navbar-toggler-icon {
+    filter: invert(1);
+}

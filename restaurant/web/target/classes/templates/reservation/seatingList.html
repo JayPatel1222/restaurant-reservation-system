@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <th:block th:replace="~{partial :: bootstrap}"/>
+    <title>Event Details</title>
+    <link rel="stylesheet" th:href="@{/css/details.css}">
+    <th:block th:replace="~{event/styleFragment :: commonCss}"/>
+</head>
+<body>
+<header>
+    <nav th:replace="~{nav :: navbar}"></nav>
+</header>
+
+<div class="container mt-3">
+    <div class="row g-5">
+        <div th:replace="~{reservation/fragments :: event}"></div>
+        <div th:replace="~{reservation/fragments :: menu}"></div>
+    </div>
+
+    <div th:replace="~{seating/fragments :: list}"></div>
+
+    <a th:href="@{/reservation}" class="btn btn-main action-btn mt-2">
+        Go Back
+    </a>
+</div>
+<th:block th:replace="~{footer :: footer}"/>
+</body>
+</html>

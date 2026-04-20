@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fragments</title>
+</head>
+<body>
+<!--/*@thymesVar id="event" type="nbcc.resto.dto.UrbanPlatterEvent"*/-->
+
+<!--/*@thymesVar id="viewModel" type="nbcc.resto.viewmodel.ReservationListViewModel"*/-->
+
+<th:block th:fragment="list" th:object="${viewModel}">
+
+    <div class="row g-4" th:unless="*{isEmpty()}" >
+        <div class="col-md-3"  th:each="event : *{events}">
+
+            <div class="event-card">
+                <h5 class="event-title fw-semibold" th:text="${event.name}"></h5>
+                <div class="mt-3 d-flex">
+                    <strong style="width:110px;">Start Date:</strong>
+                    <span th:text="${#temporals.format(event.startDate,'yyyy-MM-dd')}"></span>
+                </div>
+
+                <div class="mt-2 d-flex">
+                    <strong style="width:110px;">End Date:</strong>
+                    <span th:text="${#temporals.format(event.endDate,'yyyy-MM-dd')}"></span>
+                </div>
+
+                <div class="mt-2 d-flex">
+                    <strong style="width:110px;">Price:</strong>
+                    <span th:text="${#numbers.formatCurrency(event.price)}"></span>
+                </div>
+
+                <div class="mt-2 d-flex flex-column align-items-center gap-1">
+                    <a th:if="*{isShowReservationsButton()}" th:href="@{/reservation/list/event/{id}(id=${event.id})}" class="btn btn-secondary">
+                        Reservations
+                    </a>
+                    <a th:href="@{/reservation/{id}(id=${event.id})}" class="btn btn-main">
+                        Details
+                    </a>
+                </div>
+            </div>
+        </div>
+<!--        </div>-->
+    </div>
+    <p th:if="*{isEmpty()}" class="text-center mt-5">
+        No Events Found
+    </p>
+</th:block>
+
+<th:block th:fragment="event" th:object="${event}">
+    <div class="col-md-4">
+        <div class="event-card h-100">
+            <div class="text-center mb-4">
+                <h2 class="event-title" th:text="*{name}"></h2>
+                <p class="event-description" th:text="*{description}"></p>
+            </div>
+
+            <div class="row text-center mt-4 g-3">
+                <div class="col-6">
+                    <div class="text-muted small">PRICE</div>
+                    <div class="fw-bold fs-5" th:text="*{#numbers.formatCurrency(price)}"></div>
+                </div>
+                <div class="col-6">
+                    <div class="text-muted small">DURATION (min)</div>
+                    <div class="fw-bold fs-5" th:text="*{minutes}"></div>
+                </div>
+                <div class="col-6">
+                    <div class="text-muted small">START DATE</div>
+                    <div class="fw-bold" th:text="*{#temporals.format(startDate, 'dd-MM-yyyy : HH:mm ')}"></div>
+                </div>
+                <div class="col-6">
+                    <div class="text-muted small">END DATE</div>
+                    <div class="fw-bold" th:text="*{#temporals.format(endDate, 'dd-MM-yyyy : HH:mm')}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+<!--/*@thymesVar id="menu" type="nbcc.resto.dto.Menu"*/-->
+<th:block th:fragment="menu" th:object="${menu}">
+    <div th:if="${menu != null}" class="col-md-4">
+        <div class="event-card h-100">
+            <div class="text-center mb-4">
+                <h4 class="event-title">Menu</h4>
+                <p class="fw-bold fd-5 text-success" th:text="*{name}"></p>
+            </div>
+            <ul class="list-group list-group-flush"
+                th:if="*{items != null}" th:each="item: *{items}">
+                <li class="list-group-item shadow-sm mb-1 rounded" th:text="${item.name}"></li>
+            </ul>
+        </div>
+    </div>
+</th:block>
+
+<!--/*@thymesVar id="seating" type="nbcc.resto.dto.Seating"*/-->
+<th:block th:fragment="seating" th:object="${seating}">
+    <div class="col-md-4">
+        <div class="event-card h-100">
+
+            <div class="text-center mb-4">
+                <h2 class="event-title" th:text="*{name}"></h2>
+            </div>
+
+            <div class="row text-center mt-4 g-3">
+                <div class="col-6">
+                    <div class="text-muted small">DATE:</div>
+                    <div class="fw-bold fs-5" th:text="*{#temporals.format(startDate, 'dd-MM-yyyy')}"></div>
+                </div>
+                <div class="col-6">
+                    <div class="text-muted small">DURATION (min)</div>
+                    <div class="fw-bold fs-5" th:text="*{duration}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+
+<th:block th:fragment="input">
+    <!--/*@thymesVar id="reservation" type="nbcc.resto.dto.Reservation"*/-->
+    <th:block th:object="${reservation}" th:if="${reservation != null}">
+        <div class="card shadow-sm mt-5 p-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="card-title mb-0">Guest Information</h5>
+            </div>
+            <div class="card-body">
+
+                <div class="alert alert-danger" th:if="${#fields.hasGlobalErrors()}" role="alert">
+                    <strong>Error!</strong>
+                    <div th:each="err : ${#fields.globalErrors}" th:text="${err}"></div>
+                </div>
+
+                <input type="hidden" th:field="*{id}"/>
+                <input type="hidden" th:field="*{version}"/>
+                <input type="hidden" th:field="*{seating.id}" th:if="*{seating}"/>
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                    <label class="form-label fw-bold">
+                        First Name
+                        <input th:field="*{firstName}" class="form-control mt-1" placeholder="Enter your first name"/>
+                    </label>
+                    <div class="text-danger small mt-1 fw-semibold" th:errors="*{firstName}"></div>
+                        </div>
+                    </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                    <label class="form-label fw-bold">
+                        Last Name
+                        <input th:field="*{lastName}" class="form-control mt-1" placeholder="Enter your last name"/>
+                    </label>
+                    <div class="text-danger small mt-1 fw-semibold" th:errors="*{lastName}"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                Email Address
+                                <input type="email" th:field="*{email}" class="form-control mt-1" placeholder="user@example.com"/>                            </label>
+                            <div class="text-danger small mt-1 fw-semibold" th:errors="*{email}"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                               Group Size
+                                <input type="number"  th:field="*{groupSize}" class="form-control mt-1" />
+                            </label>
+                            <div class="text-danger small mt-1 fw-semibold" th:errors="*{groupSize}"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </th:block>
+</th:block>
+
+<th:block th:fragment="filter" th:object="${viewModel}">
+    <div class=" mb-2 mt-4">
+    <div class=" filter w-50 mx-auto border p-4 rounded shadow-sm">
+        <form th:action="@{/reservation/filter}" method="get">
+            <div class="row g-2 mb-3">
+
+                <div class="row g-2 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label p-1"> Select Event
+                            <select name="eventId" class="form-select">
+                                <option value="" th:selected="${viewModel.getFilterByEvent() == null}">All Events</option>
+                                <option th:each="event : *{events}"
+                                        th:value="${event.id}"
+                                        th:text="${event.name}"
+                                        th:selected="${viewModel.getFilterByEvent() != null and viewModel.getFilterByEvent() == event.id}">
+                                </option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label p-1">Select Status
+                            <select name="status" class="form-select">
+                                <option value="" th:selected="${viewModel.getFilterByStatus() == null}">All Status</option>
+                                <option th:each="statusName : ${T(nbcc.resto.dto.ReservationStatus).values()}"
+                                        th:value="${statusName}"
+                                        th:text="${statusName}"
+                                        th:selected="${viewModel.getFilterByStatus() != null and viewModel.getFilterByStatus() == statusName}">
+                                </option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-danger">
+                        Filter
+                    </button>
+                    <a th:href="@{/reservation/list}" class="btn btn-secondary">
+                        Clear Filters
+                    </a>
+                </div>
+            </div>
+            <p class="text-danger" th:text="${filterMessage}" style="margin: 16px"></p>
+        </form>
+    </div>
+    </div>
+    <div style="display: flex; justify-content: space-between">
+        <a th:if="${viewModel.showBackButton}" th:href="@{/reservation/list}" class="btn btn-secondary mb-1">
+            Go Back
+        </a>
+    </div>
+</th:block>
+
+<th:block th:fragment="reservationsList">
+    <div class="card shadow-sm mt-5 p-4">
+        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0 text-dark" th:text="${viewModel.title}"></h5>
+        </div>
+        <div class="card-body p-0" th:unless="${viewModel.isReservationsEmpty()}">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped mb-0">
+                    <thead class="table-dark">
+                    <tr>
+                        <th class="fw-bold">Guest</th>
+                        <th class="fw-bold">Group Size</th>
+                        <th th:if="${viewModel.showEvent}" class="fw-bold">Event</th>
+                        <th class="fw-bold">Seating</th>
+                        <th th:if="${!viewModel.isHideStatus()}" class="fw-bold">Status</th>
+                        <th class="fw-bold">Manage</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="request : ${viewModel.getReservations()}" class="align-middle">
+                        <td>
+                            <strong class="text-dark" th:text="${request.firstName} + ' ' + ${request.lastName}"></strong>
+                        </td>
+                        <td>
+                            <strong class="text-dark" th:text="${request.groupSize}"></strong>
+                        </td>
+                        <td th:if="*{viewModel.isShowEvent()}">
+                            <a th:if="${request.seating.platterEvent}" class="badge bg-secondary text-decoration-none p-2"
+
+                               th:href="@{/event/{eventId}(eventId=${request.seating.getPlatterEvent().id})}" th:text="${request.seating.platterEvent.name}"></a>
+                            <span th:unless="${ request.seating.platterEvent}" class="text-muted small">No Event</span>
+                        </td>
+                        <td>
+                            <strong  class="text-dark" th:text="${#temporals.format(request.seating.startDate, 'dd-MM-yyyy HH:mm')}"></strong>
+                        </td>
+                        <td th:if="${!viewModel.isHideStatus()}" th:with="status = ${T(nbcc.resto.dto.ReservationStatus)}">
+                            <strong th:if="${request.status == status.PENDING }" class="text-warning" th:text="${request.status}"></strong>
+                            <strong th:if="${request.status == status.DENIED }" class="text-danger" th:text="${request.status}"></strong>
+                            <strong th:if="${request.status == status.APPROVED }" class="text-success" th:text="${request.status}"></strong>
+                        </td>
+                        <td>
+                            <a th:href="@{/reservation/details/{requestId}(requestId=${request.id})}"
+                               class="btn btn-dark action-btn" title="View Details">
+                                Details
+                            </a>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-body text-center py-5" th:if="${viewModel.isReservationsEmpty()}">
+            <div class="text-muted">
+                <h5>No Reservations Found</h5>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+<th:block th:fragment="details">
+    <!--/*@thymesVar id="reservation" type="nbcc.resto.dto.Reservation"*/-->
+    <div class="event-card mx-auto" th:object="${reservation}">
+        <div class="text-center mb-4">
+            <h2 class="event-title">Request Details</h2>
+        </div>
+        <div class="info-grid">
+
+            <div>
+                <div class="label">GUEST NAME</div>
+                <div class="value" th:text="${reservation.firstName} + ' ' + ${reservation.lastName}"></div>
+            </div>
+            <div>
+                <div class="label">EMAIL</div>
+                <div class="value" th:text="*{email}"></div>
+            </div>
+            <div>
+                <div class="label">GROUP SIZE</div>
+                <div class="value" th:text="*{groupSize}"></div>
+            </div>
+            <div>
+                <div class="label">EVENT</div>
+                <div class="value">
+                    <a th:if="*{seating.platterEvent}" class="badge bg-success text-decoration-none p-1"
+                       th:href="@{/event/{eventId}(eventId=*{seating.getPlatterEvent().id})}" th:text="*{seating.platterEvent.name}"></a>
+                    <span th:unless="*{seating.platterEvent}" class="text-muted small">No Event</span>
+                </div>
+            </div>
+            <div>
+                <div class="label">SEATING</div>
+                <div class="value" th:text="*{seating.name}"></div>
+                <div class="value text-muted" th:text="*{#temporals.format(seating.startDate, 'dd-MM-yyyy : HH:mm')}"></div>
+                <div class="value text-muted" th:text="${reservation.seating.duration} + ' min'"></div>
+            </div>
+            <div th:with="status = ${T(nbcc.resto.dto.ReservationStatus)}">
+                <div class="label">STATUS</div>
+                <div class="value">
+                    <strong th:if="*{status == status.PENDING }" class="text-warning" th:text="*{status}"></strong>
+                    <strong th:if="*{status == status.DENIED }" class="text-danger" th:text="*{status}"></strong>
+                    <strong th:if="*{status == status.APPROVED }" class="text-success" th:text="*{status}"></strong>
+                </div>
+            </div>
+            <div th:if="*{assignedTable != null}">
+                <div class="label">TABLE ASSIGNED</div>
+                <div class="value" th:text="*{assignedTable.name}"></div>
+            </div>
+
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center gap-3 mt-5 action-bar">
+
+            <a th:href="@{/reservation/list}" class="btn btn-secondary action-btn">
+                Go Back
+            </a>
+            <th:block th:with="status = ${T(nbcc.resto.dto.ReservationStatus)}">
+            <a th:if="*{status == status.DENIED || status == status.PENDING}"
+                th:href="@{/reservation/details/{requestId}/assignTable(requestId=*{id})}" class="btn btn-success action-btn">
+                Approve
+            </a>
+                <div th:if="*{status == status.PENDING}" >
+                    <form th:action="@{/reservation/{requestId}/deny(requestId=${reservation.id})}" method="post">
+                        <button type="submit" class="btn btn-danger">Deny</button>
+                    </form>
+                </div>
+            </th:block>
+        </div>
+    </div>
+
+</th:block>
+
+</body>
+</html>
